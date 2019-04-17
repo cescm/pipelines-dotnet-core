@@ -13,6 +13,10 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+
+- script: dotnet restore
+  displayName: 'Restaurando Paquetes con NuGet'
+
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
@@ -20,5 +24,4 @@ steps:
     projects: '**\*.csproj'
     arguments: '--configuration Release'
 
-- script: dotnet restore
-  displayName: 'Restaurando Paquetes con NuGet'
+
