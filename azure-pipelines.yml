@@ -15,7 +15,7 @@ variables:
 steps:
 #Esta primera tarea restaura los paquetes de depencias para todos los proyectos que tengamos en la carpeta
 - task: DotNetCoreCLI@2
-  displayName: 'Restaurar con Nuget'
+  displayName: 'Restaurar con Nuget' #el título de la tarea que queremos que se muestre en pantalla
   inputs:
     command: restore
     projects: '**/*.csproj'
@@ -26,15 +26,21 @@ steps:
   inputs:
     command: build
     projects: '**/*.csproj'
-    arguments: '--configuration Release'
+    arguments: '--configuration $(buildConfiguration)'
 
 #Podemos instalar cosas adicionales:
 - task: DotNetCoreCLI@2
   displayName: 'Instalando dotnetsay'
   inputs:
     command: custom
-    projects: '**\*.csproj'
+    projects: '**/*.csproj'
     custom: tool
     arguments: 'install -g dotnetsay'
 
-
+#Pasamos los tests si los hubiera:
+- task: DotNetCoreCLI@2
+  displayName: 'Pasando test'
+  inputs:
+    command: test
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
