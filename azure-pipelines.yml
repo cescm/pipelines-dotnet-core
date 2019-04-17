@@ -13,18 +13,28 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-
+#Esta primera tarea restaura los paquetes de depencias para todos los proyectos que tengamos en la carpeta
 - task: DotNetCoreCLI@2
-  displayName: Restaurar con Nuget
+  displayName: 'Restaurar con Nuget'
   inputs:
     command: restore
     projects: '**/*.csproj'
 
+#Hacemos el build de todos los proyectos en la carpeta
 - task: DotNetCoreCLI@2
-  displayName: Build
+  displayName: 'Build'
   inputs:
     command: build
     projects: '**/*.csproj'
     arguments: '--configuration Release'
+
+#Podemos instalar cosas adicionales:
+- task: DotNetCoreCLI@2
+  displayName: 'Instalando dotnetsay'
+  inputs:
+    command: custom
+    projects: '**\*.csproj'
+    custom: tool
+    arguments: 'install -g dotnetsay'
 
 
