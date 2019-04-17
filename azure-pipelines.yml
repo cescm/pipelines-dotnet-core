@@ -45,10 +45,24 @@ steps:
     projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
-#podemos hacer también después de haber pasado los tests(esto hay que probarlo cuando tengamos algún test)
+#también podemos hacerlo usando el comando dotnet test
 #- script: dotnet test <test-project> --logger trx
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
+#- task: PublishTestResults@2
+#  condition: succeededOrFailed()
+#  inputs:
+#    testRunner: VSTest
+#    testResultsFiles: '**/*.trx'
+
+#Cobertura
+- task: DotNetCoreCLI@2
   inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
+#Si hubiésemos usado el comando dotnet test tendríamos que usar para recuperar la cobertura lo siguiente:
+#- script: dotnet test <test-project> --logger trx --collect "Code coverage"
+#- task: PublishTestResults@2
+#  inputs:
+#    testRunner: VSTest
+#    testResultsFiles: '**/*.trx'
